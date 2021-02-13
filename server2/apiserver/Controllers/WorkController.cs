@@ -9,19 +9,23 @@ namespace apiserver.Controllers
     {
         private readonly WorkQueue _workQueue;
         private readonly ILogger<WorkController> _logger;
+        private readonly JobTracker _jobTracker;
 
         public WorkController(
             WorkQueue workQueue,
+            JobTracker jobTracker,
             ILogger<WorkController> logger)
         {
             _workQueue = workQueue;
             _logger = logger;
+            _jobTracker = jobTracker;
         }
 
         [HttpGet]
-        public int Get()
+        [Route("{id}")]
+        public string GetStatus(int id)
         {
-            return 1;
+            return _jobTracker.FindJob(id).Status;
         }
 
         [HttpPost]

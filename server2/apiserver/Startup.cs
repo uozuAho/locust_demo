@@ -26,11 +26,13 @@ namespace apiserver
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "apiserver", Version = "v1" });
             });
 
-            var workQueue = new WorkQueue();
+            var jobTracker = new JobTracker();
+            var workQueue = new WorkQueue(jobTracker);
             var worker = new Worker(workQueue);
             worker.Start();
 
             services.AddSingleton(workQueue);
+            services.AddSingleton(jobTracker);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

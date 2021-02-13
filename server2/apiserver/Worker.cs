@@ -26,6 +26,7 @@ namespace apiserver
                 if (_queue.HasWork())
                 {
                     var job = _queue.Pop();
+                    job.Status = "done";
                     Console.WriteLine($"Completed job {job.Id}");
                 }
             }

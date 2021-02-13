@@ -4,13 +4,20 @@ namespace apiserver
 {
     public class WorkQueue
     {
+        private readonly JobTracker _jobTracker;
         private readonly ConcurrentQueue<Job> _queue = new();
         private int _jobCounter = 0;
+
+        public WorkQueue(JobTracker jobTracker)
+        {
+            _jobTracker = jobTracker;
+        }
 
         public int Add(string message)
         {
             var job = CreateJob(message);
 
+            _jobTracker.Add(job);
             _queue.Enqueue(job);
 
             return job.Id;
@@ -21,7 +28,8 @@ namespace apiserver
             return new Job
             {
                 Id = ++_jobCounter,
-                Message = message
+                Message = message,
+                Status = "new"
             };
         }
 
