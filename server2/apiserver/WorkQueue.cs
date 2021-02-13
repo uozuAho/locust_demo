@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace apiserver.Controllers
+namespace apiserver
 {
     public class WorkQueue
     {

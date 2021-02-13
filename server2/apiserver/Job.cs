@@ -1,4 +1,4 @@
-﻿namespace apiserver.Controllers
+﻿namespace apiserver
 {
     public class Job
     {

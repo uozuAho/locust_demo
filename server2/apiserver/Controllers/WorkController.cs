@@ -8,11 +8,11 @@ namespace apiserver.Controllers
     public class WorkController : ControllerBase
     {
         private readonly WorkQueue _workQueue;
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<WorkController> _logger;
 
         public WorkController(
             WorkQueue workQueue,
-            ILogger<WeatherForecastController> logger)
+            ILogger<WorkController> logger)
         {
             _workQueue = workQueue;
             _logger = logger;
