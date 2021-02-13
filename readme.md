@@ -42,17 +42,6 @@ job. You'll notice in the locust reports that the endpoint response times are
 great - a few milliseconds. These are independent of the load on the system.
 However, the 'job completed' metric is affected by the load on the system.
 
-## 1 virtual user (VU) creates one job per second
-With one user, the worker can keep up, so jobs don't wait for long in the queue.
-With any more than one user, the job queue gets longer and longer. The job
-completion time is unbounded, and the queue will only shrink once the job
-creation rate drops below 1 job per second.
-
-@ 5 VUs
-- POST /work RPS: 5
-- median 'job completed' time: unbounded, proportional to length of load test
-    - this is measured by the server, not locust. See the console output.
-
 
 ## 1 VU creates jobs, waiting for each one to complete
 This is only an accurate load test if your users are blocked from performing
@@ -68,3 +57,26 @@ Note that:
 
 Play with the `WORKER_JOB_COMPLETION_RATE_PER_SECOND` in `docker-compose.yml`
 to see what effect it has on the above metrics.
+
+
+## 1 virtual user (VU) creates one job per second
+With one user, the worker can keep up, so jobs don't wait for long in the queue.
+With any more than one user, the job queue gets longer and longer. The job
+completion time is unbounded, and the queue will only shrink once the job
+creation rate drops below 1 job per second.
+
+@ 5 VUs
+- POST /work RPS: 5
+- median 'job completed' time: unbounded, proportional to length of load test
+    - this is measured by the server, not locust. See the console output.
+
+All looks fine on the locust dashboard:
+
+![](img/5rps_stats.png)
+
+![](img/5rps_charts.png)
+
+However, all is not fine. The work queue is getting longer and longer, and users
+have to wait longer for their jobs to complete:
+
+![](img/5rps_queue_backup.png)
