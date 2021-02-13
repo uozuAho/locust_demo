@@ -6,10 +6,10 @@ namespace apiserver
 {
     public class Worker
     {
-        private readonly WorkQueue _queue;
+        private readonly JobQueue _queue;
         private readonly double _workerDelayMs;
 
-        public Worker(WorkQueue queue, double jobCompletionRatePerSecond)
+        public Worker(JobQueue queue, double jobCompletionRatePerSecond)
         {
             _queue = queue;
             _workerDelayMs = 1000 / jobCompletionRatePerSecond;
@@ -36,7 +36,7 @@ namespace apiserver
             }
         }
 
-        private void PrintCompletedJob(Job job)
+        private static void PrintCompletedJob(Job job)
         {
             Console.WriteLine($"Job {job.Id} complete");
             Console.WriteLine($"    Time waiting in queue: {job.Started - job.Created}");

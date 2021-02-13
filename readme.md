@@ -20,8 +20,8 @@ Runs locust against a dotnet server, using docker-compose.
 
 The server has two endpoints:
 
-POST /work?message=x          returns a job id
-GET /work/job_id              returns the status of the job (new or done)
+POST /jobs?message=x          returns a job id
+GET /jobs/job_id              returns the status of the job (new or done)
 
 Jobs are processed by a background worker at a rate of 1 job per second. This
 can be changed via the `WORKER_JOB_COMPLETION_RATE_PER_SECOND` environment
@@ -38,7 +38,7 @@ Change the `command` setting in docker-compose.yml
 For all of these experiments, I'm interested in the time it takes to complete a
 job. You'll notice in the locust reports that the endpoint response times are
 great - a few milliseconds. These are independent of the load on the system.
-However, the 'work completed' metric is affected by the load on the system.
+However, the 'job completed' metric is affected by the load on the system.
 
 ## 1 virtual user (VU) creates one job per second
 With one user, the worker can keep up, so jobs don't wait for long in the queue.
@@ -48,7 +48,7 @@ creation rate drops below 1 job per second.
 
 @ 5 VUs
 - POST /work RPS: 5
-- median 'work completed' time: unbounded, proportional to length of load test
+- median 'job completed' time: unbounded, proportional to length of load test
     - this is measured by the server, not locust. See the console output.
 
 

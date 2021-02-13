@@ -3,13 +3,13 @@ using System.Collections.Concurrent;
 
 namespace apiserver
 {
-    public class WorkQueue
+    public class JobQueue
     {
         private readonly JobTracker _jobTracker;
         private readonly ConcurrentQueue<Job> _queue = new();
         private int _jobCounter = 0;
 
-        public WorkQueue(JobTracker jobTracker)
+        public JobQueue(JobTracker jobTracker)
         {
             _jobTracker = jobTracker;
         }

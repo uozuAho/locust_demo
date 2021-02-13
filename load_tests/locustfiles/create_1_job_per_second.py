@@ -10,6 +10,6 @@ class CreateOneJobPerSecond(HttpUser):
         self.start_job()
 
     def start_job(self):
-        with self.client.post("/work?message=yo") as create_response:
+        with self.client.post("/jobs?message=yo") as create_response:
             job_id = int(create_response.content)
             return job_id

@@ -5,18 +5,18 @@ namespace apiserver.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WorkController : ControllerBase
+    public class JobsController : ControllerBase
     {
-        private readonly WorkQueue _workQueue;
-        private readonly ILogger<WorkController> _logger;
+        private readonly JobQueue _jobQueue;
+        private readonly ILogger<JobsController> _logger;
         private readonly JobTracker _jobTracker;
 
-        public WorkController(
-            WorkQueue workQueue,
+        public JobsController(
+            JobQueue jobQueue,
             JobTracker jobTracker,
-            ILogger<WorkController> logger)
+            ILogger<JobsController> logger)
         {
-            _workQueue = workQueue;
+            _jobQueue = jobQueue;
             _logger = logger;
             _jobTracker = jobTracker;
         }
@@ -31,7 +31,7 @@ namespace apiserver.Controllers
         [HttpPost]
         public int Post(string message)
         {
-            var jobId = _workQueue.Add(message);
+            var jobId = _jobQueue.Add(message);
 
             _logger.LogInformation($"added job {jobId} to queue");
 

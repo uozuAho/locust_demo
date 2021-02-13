@@ -27,11 +27,11 @@ namespace apiserver
 
             
             var jobTracker = new JobTracker();
-            var workQueue = new WorkQueue(jobTracker);
-            var worker = new Worker(workQueue, GetWorkerJobCompletionRate());
+            var jobQueue = new JobQueue(jobTracker);
+            var worker = new Worker(jobQueue, GetWorkerJobCompletionRate());
             worker.Start();
 
-            services.AddSingleton(workQueue);
+            services.AddSingleton(jobQueue);
             services.AddSingleton(jobTracker);
         }
 
