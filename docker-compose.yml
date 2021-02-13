@@ -10,6 +10,6 @@ services:
     command: -f /mnt/locust/locustfile.py
 
   server:
-    build: dotnet-docker/samples/aspnetapp
+    build: server2
     ports:
       - 5000:80

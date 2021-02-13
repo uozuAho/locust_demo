@@ -5,9 +5,5 @@ class QuickstartUser(HttpUser):
     wait_time = between(1, 2.5)
 
     @task
-    def hello_world(self):
-        self.client.get("/")
-
-    @task(3)
     def view_items(self):
-        self.client.get("/Privacy")
+        self.client.get("/WeatherForecast")
