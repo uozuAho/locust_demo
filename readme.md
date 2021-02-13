@@ -7,8 +7,10 @@ Runs locust against a dotnet server, using docker-compose.
 
 - install docker
 
-> docker-compose build  # needed after any changes to the server
-> docker-compose up
+```sh
+docker-compose build  # needed after any changes to the server
+docker-compose up
+```
 
 - browse to localhost:8089
 - select any number of users & spawn rate
@@ -20,8 +22,8 @@ Runs locust against a dotnet server, using docker-compose.
 
 The server has two endpoints:
 
-POST /jobs?message=x          returns a job id
-GET /jobs/job_id              returns the status of the job (new or done)
+- `POST /jobs?message=x`: returns a job id
+- `GET /jobs/job_id`    : returns the status of the job (new or done)
 
 Jobs are processed by a background worker at a rate of 1 job per second. This
 can be changed via the `WORKER_JOB_COMPLETION_RATE_PER_SECOND` environment
@@ -60,9 +62,9 @@ actions by a time that is proportional to system load.
 - POST /work RPS: 1
 - median 'work completed' time: 5s
 
-Note that
-    - RPS is constrained to the rate that the worker completes jobs
-    - The time to complete a job = the number of VUs
+Note that:
+- RPS is constrained to the rate that the worker completes jobs
+- The time to complete a job = the number of VUs
 
 Play with the `WORKER_JOB_COMPLETION_RATE_PER_SECOND` in `docker-compose.yml`
 to see what effect it has on the above metrics.
