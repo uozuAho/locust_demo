@@ -52,8 +52,11 @@ actions by a time that is proportional to system load.
 - median 'work completed' time: 5s
 
 Note that:
-- RPS is constrained to the rate that the worker completes jobs
-- The time to complete a job = the number of VUs
+- RPS is the total completed requests per second for that endpoint/operation,
+  not per user
+- in this scenario, RPS is constrained by the rate that the worker completes
+  jobs
+- time to complete a job = the number of VUs
 
 Play with the `WORKER_JOB_COMPLETION_RATE_PER_SECOND` in `docker-compose.yml`
 to see what effect it has on the above metrics.
