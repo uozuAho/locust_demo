@@ -8,7 +8,7 @@ Runs locust against a dotnet server, using docker-compose.
 - install docker
 
 > docker-compose build  # needed after any changes to the server
-> LOCUST_FILE=load_tests/locustfiles/create_job_and_wait_until_completed.py docker-compose up
+> docker-compose up
 
 - browse to localhost:8089
 - select any number of users & spawn rate
@@ -28,4 +28,4 @@ Jobs are processed by a background worker at a rate of 1 job per second.
 
 # Running different load tests
 
-Choose the locustfile to use by setting the LOCUST_FILE environment variable.
+Change the `command` setting in docker-compose.yml
