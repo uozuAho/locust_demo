@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 
 namespace apiserver
 {
@@ -29,7 +30,8 @@ namespace apiserver
             {
                 Id = ++_jobCounter,
                 Message = message,
-                Status = "new"
+                Status = "new",
+                Created = DateTime.Now
             };
         }
 
