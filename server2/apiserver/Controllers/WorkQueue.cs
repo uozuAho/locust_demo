@@ -24,5 +24,16 @@ namespace apiserver.Controllers
                 Message = message
             };
         }
+
+        public bool HasWork()
+        {
+            return !_queue.IsEmpty;
+        }
+
+        public Job Pop()
+        {
+            _queue.TryDequeue(out var job);
+            return job;
+        }
     }
 }

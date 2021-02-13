@@ -1,3 +1,6 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using apiserver.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +28,12 @@ namespace apiserver
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "apiserver", Version = "v1" });
             });
-            services.AddSingleton(new WorkQueue());
+
+            var workQueue = new WorkQueue();
+            var worker = new Worker(workQueue);
+            worker.Start();
+
+            services.AddSingleton(workQueue);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +56,34 @@ namespace apiserver
             {
                 endpoints.MapControllers();
             });
+        }
+    }
+
+    public class Worker
+    {
+        private readonly WorkQueue _queue;
+
+        public Worker(WorkQueue queue)
+        {
+            _queue = queue;
+        }
+
+        public void Start()
+        {
+            Task.Run(RunWorkLoop);
+        }
+
+        private void RunWorkLoop()
+        {
+            while (true)
+            {
+                Thread.Sleep(1000);
+                if (_queue.HasWork())
+                {
+                    var job = _queue.Pop();
+                    Console.WriteLine($"Completed job {job.Id}");
+                }
+            }
         }
     }
 }
