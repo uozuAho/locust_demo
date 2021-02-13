@@ -23,7 +23,9 @@ The server has two endpoints:
 POST /work?message=x          returns a job id
 GET /work/job_id              returns the status of the job (new or done)
 
-Jobs are processed by a background worker at a rate of 1 job per second.
+Jobs are processed by a background worker at a rate of 1 job per second. This
+can be changed via the `WORKER_JOB_COMPLETION_RATE_PER_SECOND` environment
+variable in `docker-compose.yml`.
 
 
 # Running different load tests
@@ -45,17 +47,22 @@ completion time is unbounded, and the queue will only shrink once the job
 creation rate drops below 1 job per second.
 
 @ 5 VUs
-- 5 RPS to POST /work
-- time to complete job: unbounded, proportional to length of load test
+- POST /work RPS: 5
+- median 'work completed' time: unbounded, proportional to length of load test
+    - this is measured by the server, not locust. See the console output.
 
 
 ## 1 VU creates jobs, waiting for each one to complete
-The time each user waits for a job to complete tends to the number of users.
 This is only an accurate load test if your users are blocked from performing
 actions by a time that is proportional to system load.
 
 @ 5 VUs
-- 1 RPS to POST /work
-- time to complete job: 5s
+- POST /work RPS: 1
+- median 'work completed' time: 5s
 
-Note that RPS is constrained to the rate that the worker completes jobs.
+Note that
+    - RPS is constrained to the rate that the worker completes jobs
+    - The time to complete a job = the number of VUs
+
+Play with the `WORKER_JOB_COMPLETION_RATE_PER_SECOND` in `docker-compose.yml`
+to see what effect it has on the above metrics.

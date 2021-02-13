@@ -12,5 +12,7 @@ services:
 
   server:
     build: server2
+    environment:
+      - WORKER_JOB_COMPLETION_RATE_PER_SECOND=1.0
     ports:
       - 5000:80

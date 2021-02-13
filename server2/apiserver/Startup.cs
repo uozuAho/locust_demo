@@ -1,9 +1,8 @@
-using apiserver.Controllers;
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 namespace apiserver
@@ -26,9 +25,10 @@ namespace apiserver
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "apiserver", Version = "v1" });
             });
 
+            
             var jobTracker = new JobTracker();
             var workQueue = new WorkQueue(jobTracker);
-            var worker = new Worker(workQueue);
+            var worker = new Worker(workQueue, GetWorkerJobCompletionRate());
             worker.Start();
 
             services.AddSingleton(workQueue);
@@ -50,6 +50,19 @@ namespace apiserver
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private static double GetWorkerJobCompletionRate()
+        {
+            var envVar = Environment.GetEnvironmentVariable("WORKER_JOB_COMPLETION_RATE_PER_SECOND");
+
+            var rate = double.TryParse(envVar, out var parsedRate)
+                ? parsedRate
+                : 1.0;
+
+            Console.WriteLine($"Worker will complete {rate} jobs per second");
+
+            return rate;
         }
     }
 }

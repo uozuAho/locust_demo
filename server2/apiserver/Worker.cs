@@ -7,10 +7,12 @@ namespace apiserver
     public class Worker
     {
         private readonly WorkQueue _queue;
+        private readonly double _workerDelayMs;
 
-        public Worker(WorkQueue queue)
+        public Worker(WorkQueue queue, double jobCompletionRatePerSecond)
         {
             _queue = queue;
+            _workerDelayMs = 1000 / jobCompletionRatePerSecond;
         }
 
         public void Start()
@@ -26,7 +28,7 @@ namespace apiserver
                 {
                     var job = _queue.Pop();
                     job.Started = DateTime.Now;
-                    Thread.Sleep(1000);
+                    Thread.Sleep(TimeSpan.FromMilliseconds(_workerDelayMs));
                     job.Completed = DateTime.Now;
                     job.Status = "done";
                     PrintCompletedJob(job);
