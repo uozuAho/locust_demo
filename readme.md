@@ -43,7 +43,7 @@ great - a few milliseconds. These are independent of the load on the system.
 However, the 'job completed' metric is affected by the load on the system.
 
 
-## 1 VU creates jobs, waiting for each one to complete
+## 1 virtual user (VU) creates jobs, waiting for each one to complete
 This is only an accurate load test if your users are blocked from performing
 actions by a time that is proportional to system load.
 
@@ -62,7 +62,7 @@ Play with the `WORKER_JOB_COMPLETION_RATE_PER_SECOND` in `docker-compose.yml`
 to see what effect it has on the above metrics.
 
 
-## 1 virtual user (VU) creates one job per second
+## 1 (VU) creates one job per second
 With one user, the worker can keep up, so jobs don't wait for long in the queue.
 With any more than one user, the job queue gets longer and longer. The job
 completion time is unbounded, and the queue will only shrink once the job
